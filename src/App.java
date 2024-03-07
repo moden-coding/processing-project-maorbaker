@@ -12,13 +12,21 @@ public class App extends PApplet {
     boolean key_Right = false;
     int speed = 5;
 
+    int GAP = 150;
+
+    float rect1width = random(100) + 100;
+    float rect2width = 600 - rect1width - GAP;
+    float rect3width = random(100) + 100;
+    float rect4width = 600 - rect3width - GAP;
+
+
     int rect1X = 0;
     int rect1Y = 350;
-    int rect2X = 450;
+    float rect2X = 600 - rect2width;
     int rect2Y = 350;
     int rect3X = 0;
     int rect3Y = 0;
-    int rect4X = 300;
+    float rect4X = 600 - rect3width;
     int rect4Y = 0;
 
     int circleX = 300;
@@ -37,15 +45,17 @@ public class App extends PApplet {
         if (running == true) {
             background(200);
             movement();
+
+            fill(144, 238, 144);
             ellipse(circleX, circleY, 50, 50);
             if (circleX >= 600 || circleX <= 0) {
 
             }
             fill(210, 180, 140);
-            rect(rect1X, rect1Y, 300, 50);
-            rect(rect2X, rect2Y, 150, 50);
-            rect(rect3X, rect3Y, 150, 50);
-            rect(rect4X, rect4Y, 300, 50);
+            rect(rect1X, rect1Y, rect1width, 50);
+            rect(rect2X, rect2Y, rect2width, 50);
+            rect(rect3X, rect3Y, rect3width, 50);
+            rect(rect4X, rect4Y, rect4width, 50);
 
             rect1Y += 5;
             rect2Y += 5;
@@ -121,7 +131,7 @@ public class App extends PApplet {
 
     public boolean collisionDetection1() {
 
-        if (circleX > rect1X + 300) {
+        if (circleX > rect1X + rect1width) {
             return false;
         } else if (circleX + 50 < rect1X) {
             return false;
@@ -135,7 +145,7 @@ public class App extends PApplet {
     }
 
     public boolean collisionDetection2() {
-        if (circleX > rect2X + 150) {
+        if (circleX > rect2X + rect2width) {
             return false;
         } else if (circleX + 40 < rect2X) {
             return false;
@@ -149,7 +159,7 @@ public class App extends PApplet {
     }
 
     public boolean collisionDetection3() {
-        if (circleX > rect3X + 150) {
+        if (circleX > rect3X + rect3width) {
             return false;
         } else if (circleX + 50 < rect3X) {
             return false;
@@ -163,9 +173,9 @@ public class App extends PApplet {
     }
 
     public boolean collisionDetection4() {
-        if (circleX > rect4X + 300) {
+        if (circleX > rect4X + rect4width) {
             return false;
-        } else if (circleX + 50 < rect4X) {
+        } else if (circleX + 35 < rect4X) {
             return false;
         } else if (circleY > rect4Y + 50) {
             return false;
@@ -200,7 +210,9 @@ public class App extends PApplet {
 
         fill(139, 0, 0);
         textSize(60);
-        text("GAME OVER!", 160, 300);
+        text("GAME OVER!", 155, 300);
+        textSize(35);
+        text("Press [space] to restart", 145, 500);
 
     }
 
