@@ -13,24 +13,25 @@ public class App extends PApplet {
     int speed = 5;
 
     int GAP = 150;
-
-    float rect1width = random(100) + 100;
-    float rect2width = 600 - rect1width - GAP;
-    float rect3width = random(100) + 100;
-    float rect4width = 600 - rect3width - GAP;
-
-
+    
+    float rect1width, rect2width, rect3width, rect4width, rect2X, rect4X;
+    
     int rect1X = 0;
     int rect1Y = 350;
-    float rect2X = 600 - rect2width;
+
     int rect2Y = 350;
+
     int rect3X = 0;
     int rect3Y = 0;
-    float rect4X = 600 - rect3width;
+
     int rect4Y = 0;
 
     int circleX = 300;
     int circleY = 700;
+
+    int score = 0;
+    boolean gap1alreadycounted = true;
+    boolean gap2alreadycounted = true;
 
     public void settings() {
         size(600, 800);
@@ -38,20 +39,37 @@ public class App extends PApplet {
 
     public void setup() {
         background(200);
+        setRect1and2();
+        setRect3and4();
+    }
 
+    public void setRect1and2(){
+        rect1width = random(400);
+        rect2width = 600 - rect1width - GAP;
+        rect2X = 600 - rect2width;
+        gap1alreadycounted = false;
+    }
+    
+    public void setRect3and4(){
+        rect3width = random(400);
+        rect4width = 600 - rect3width - GAP;
+        rect4X = 600 - rect4width;
+        gap2alreadycounted = false;
     }
 
     public void draw() {
         if (running == true) {
-            background(200);
+            background(0, 0, 255);
             movement();
-
-            fill(144, 238, 144);
+            score();
+            fill(255, 192, 203);
             ellipse(circleX, circleY, 50, 50);
-            if (circleX >= 600 || circleX <= 0) {
 
-            }
-            fill(210, 180, 140);
+            fill(0, 0, 0);
+            textSize(55);
+            text(score, 750, 50);
+
+            fill(255, 255, 51);
             rect(rect1X, rect1Y, rect1width, 50);
             rect(rect2X, rect2Y, rect2width, 50);
             rect(rect3X, rect3Y, rect3width, 50);
@@ -62,21 +80,20 @@ public class App extends PApplet {
             rect3Y += 5;
             rect4Y += 5;
 
-            if (rect1Y == 800) {
+            if (rect1Y == 800 || rect2Y == 800) {
                 rect1Y = 0;
-            }
-            if (rect2Y == 800) {
                 rect2Y = 0;
+                setRect1and2();
             }
-            if (rect3Y == 800) {
+            if (rect3Y == 800 || rect4Y == 800) {
                 rect3Y = 0;
-            }
-            if (rect4Y == 800) {
                 rect4Y = 0;
+                setRect3and4();
             }
+        
             if (collisionDetection1()
                     || collisionDetection2() || collisionDetection3() || collisionDetection4()) {
-                gameOver();
+                    gameOver();
             }
         }
     }
@@ -186,9 +203,20 @@ public class App extends PApplet {
         }
     }
 
+    public void score(){
+        if (circleY < rect1Y && gap1alreadycounted == false) {
+            score++;
+            gap1alreadycounted = true;
+        }
+        if (circleY < rect3Y && gap2alreadycounted == false) {
+            score++;
+            gap2alreadycounted = true;
+        }
+    }
+
     public void gameOver() {
         running = false;
-        background(200);
+        background(173, 216, 230);
         rect1X = 0;
         rect1Y = 350;
         rect2X = 450;
@@ -212,11 +240,15 @@ public class App extends PApplet {
         textSize(60);
         text("GAME OVER!", 155, 300);
         textSize(35);
-        text("Press [space] to restart", 145, 500);
-
+        text("Press [space] to restart", 145, 600);
+        textSize(35);
+        text("Your score was: " + score, 182, 500);
     }
 
     public void restart() {
         running = true;
+        setRect1and2();
+        setRect3and4();
+        score = 0;
     }
 }
